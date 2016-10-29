@@ -9,8 +9,13 @@ var mongo = require('mongodb').MongoClient;
 
 // search for an image
 // /searchteam?offset=x
-app.get('/ jfsdahdsaf', function(req,res) {
-
+app.get('/:term', function(req,res) {
+    var searchTerm = req.params.term;
+    var offset = req.query.offset;
+    res.json({
+        'search': searchTerm,
+        'offset': offset
+    });
     // retrun json { 'url': page_address, 'alt-text': description, 'thumbnail': imagelink }
 });
 

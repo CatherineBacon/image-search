@@ -73,6 +73,18 @@ app.get('/:term', function(req,res) {
 
 // latest image search
 app.get('/latest/imagesearch', function(req, res) {
+    mongo.connect(mongoURL, function(err, db) {
+        if (err) throw err;
+        var collection = db.collection('searchlist');
+        collection.find({
+            _id: 1
+        }).toArray( function(err, data) {
+            if (err) throw err;
+            res.json(data[0].list);
+        });
+        db.close();
+    });
+
     // return json {'term': 'searchterm', 'when': 'dateofsearch'}
 });
 

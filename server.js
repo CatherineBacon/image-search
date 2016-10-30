@@ -9,6 +9,38 @@ var mongo = require('mongodb').MongoClient;
 var imageSearch = require('node-google-image-search');
 
 
+mongo.connect(mongoURL, function(err, db) {
+    if (err) throw err;
+    db.collection('searchlist').count( {}, function(error, count) {
+        if (count == 0) {
+            console.log('bum');
+            db.collection('searchlist').insert(
+                {
+                    _id: 1,
+                    list: []
+                }
+            );
+        }
+        db.close();    
+    });
+    
+});
+
+
+//Add entry to mongo database
+var recordSearch = function(term) {
+    mongo.connect(mongoURL, function(err, db) {
+        if (err) throw err;
+        var collection = db.collection('searchlist');
+        collection.update(
+            {_id: 1},
+            { $push: { list: {search: term, date: new Date()}  } }
+        );
+        db.close();
+    });    
+}
+
+
 
 // search for an image
 // /searchteam?offset=x
@@ -16,11 +48,9 @@ app.get('/:term', function(req,res) {
     var searchTerm = req.params.term;
     var offset = 0;
     offset = req.query.offset;
-    //res.json({
-    //    'search': searchTerm,
-    //    'offset': offset
-    //});
 
+    recordSearch(searchTerm);
+    
     if(offset) {
         offset = parseInt(offset);
     } else {
@@ -36,9 +66,8 @@ app.get('/:term', function(req,res) {
                    };
         }));
     }, offset, offset + 10)
-    // retrun json { 'url': page_address, 'alt-text': description, 'thumbnail': imagelink }
+    
 });
-
 
 
 

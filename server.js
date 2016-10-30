@@ -8,15 +8,6 @@ var mongo = require('mongodb').MongoClient;
 
 var imageSearch = require('node-google-image-search');
 
-// keys for search api
-
-
-
-var listResults = function(results){
-    console.log(results);
-    return results;
-}
-
 
 
 // search for an image
@@ -36,9 +27,14 @@ app.get('/:term', function(req,res) {
         offset = 0;
     }
 
-    var results = imageSearch(searchTerm, listResults, offset, offset + 10)
-    console.log(results);
-
+    imageSearch(searchTerm, function(results) {
+        res.json(results.map( function(e) {
+            return {'url': e.link,
+                    'alt-text': e.snippet,
+                    'thumbnail': e.image.thumbnailLink
+                   };
+        }));
+    }, offset, offset + 10)
     // retrun json { 'url': page_address, 'alt-text': description, 'thumbnail': imagelink }
 });
 

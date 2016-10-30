@@ -31,7 +31,8 @@ app.get('/:term', function(req,res) {
         res.json(results.map( function(e) {
             return {'url': e.link,
                     'alt-text': e.snippet,
-                    'thumbnail': e.image.thumbnailLink
+                    'thumbnail': e.image.thumbnailLink,
+                    'context': e.image.contextLink
                    };
         }));
     }, offset, offset + 10)

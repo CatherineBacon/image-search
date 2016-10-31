@@ -15,6 +15,10 @@ You can search for images and also get a list of the latest 10 searches.
 
 ## GET /search/term
 
+Gives you 10 results from Google image search for `term`.
+
+Optionally offset by x results by adding query parameter `?offset=x`.
+
 Example:  https://catherineimagesearch.herokuapp.com/search/kittens?offset=0
 
 Response body:
@@ -32,7 +36,23 @@ Response body:
 
 ## GET /latest/imagesearch
 
-Example: 
+Gives you the last 10 searches run on this api.
+
+Example: https://catherineimagesearch.herokuapp.com/latest/imagesearch
+
+Response body:
+
+         [
+                {
+                        "search":"trumpet",
+                        "date":"2016-10-31T19:34:41.059Z"
+                },
+                {
+                        "search":"news",
+                        "date":"2016-10-31T19:34:33.477Z"
+                },
+                ...
+         ]
 
 
 

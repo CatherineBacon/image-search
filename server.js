@@ -27,7 +27,7 @@ var recordSearch = function(term) {
 
 // search for an image
 // /searchteam?offset=x
-app.get('/:term', function(req,res) {
+app.get('/search/:term', function(req,res) {
     var searchTerm = req.params.term;
     var offset = 0;
     offset = req.query.offset;
